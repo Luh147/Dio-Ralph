@@ -22,11 +22,37 @@ const state = {
     },
     values: {
         timerId: null, 
+        countDownTimerId: setInterval(countDown, 1000),
         gameVelocity: 1000,
         hitPosition: 0,
         result: 0,
+        curretTime: 60,
+    },
+
+    actions:{
+        timerId: setInterval(randomSquare, 1000),
+        countDownTimerId: setInterval(countDown, 1000),
     },
 };
+
+
+function countDown(){
+    state.values.curretTime--;
+    state.view.timeleft.textContent = state.values.curretTime; 
+
+    clearInterval(state.values,actions.countDownTimerId);
+    clearInterval(state.values,actions.timerId);
+    if (state.values.curretTime <= 0){
+        alert("Game Over Meu Amigo! O Seu Resultado foi: " + state.values.result);
+    }
+}
+
+function playSound() {
+    let audio = new Audio("./src/audios/pontos.mp3");
+    audio.volume = 0.4;
+    audio.play();
+}
+
 
 function randomSquare(){
     state.view.squares.forEach((square) => {
@@ -50,6 +76,7 @@ function addListenerHitBox(){
         state.values.result++
         state.view.score.textContent = state.values.result;
         state.values.hitPosition = null;
+        playSound();
        }   
         });
     });
